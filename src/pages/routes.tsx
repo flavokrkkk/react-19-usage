@@ -15,7 +15,7 @@ export const routes = createBrowserRouter([
         element: <Navigate to={"/tasks"} replace />,
       },
       {
-        path: "/tasks",
+        path: "/tasks/:id",
         element: <TaskPage />,
       },
       {
