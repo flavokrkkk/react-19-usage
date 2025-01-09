@@ -5,14 +5,14 @@ export class TaskService {
   public async fetchTask({
     page = 1,
     per_page = 10,
-    sort = { createdAt: "ask" },
+    sort = { createdAt: "asc" },
     filters,
   }: {
     page?: number;
     per_page?: number;
 
     sort?: {
-      createdAt: "ask" | "desc";
+      createdAt: "asc" | "desc";
     };
     filters: {
       userId: string | undefined;
@@ -23,7 +23,7 @@ export class TaskService {
       new URLSearchParams({
         _page: String(page),
         _per_page: String(per_page),
-        _sort: sort.createdAt === "ask" ? "createdAt" : "-createdAt",
+        _sort: sort.createdAt === "asc" ? "createdAt" : "-createdAt",
         userId: filters.userId ?? "",
         title: filters.title ?? "",
       })

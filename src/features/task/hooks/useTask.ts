@@ -8,10 +8,27 @@ export const useTask = (id: string) => {
     fetchTask({ filters: { userId: id } })
   );
   const [search, setSearch] = useState("");
+  const [createdAtSorted, setCreatedAtSorted] = useState<"ask" | "desc">("ask");
 
   const getTaskOptionPage = useCallback(
-    ({ page, title }: { page?: number; title?: string }) => {
-      setTasksPromise(fetchTask({ filters: { userId: id, title }, page }));
+    ({
+      page,
+      title,
+      sorted = createdAtSorted,
+    }: {
+      page?: number;
+      title?: string;
+      sorted?: "ask" | "desc";
+    }) => {
+      setTasksPromise(
+        fetchTask({
+          filters: { userId: id, title },
+          page,
+          sort: {
+            createdAt: sorted,
+          },
+        })
+      );
     },
     [id]
   );
@@ -37,11 +54,20 @@ export const useTask = (id: string) => {
     updateTaskDebounced(event.currentTarget.value);
   }, []);
 
+  const handleChangeSort = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setCreatedAtSorted(event.target.value as "ask" | "desc");
+    startTransition(() =>
+      getTaskOptionPage({ sorted: event.target.value as "ask" | "desc" })
+    );
+  };
+
   return {
     search,
     tasksPromise,
+    createdAtSorted,
     onChangePage,
     onChangeSearch,
+    handleChangeSort,
     deleteTaskAction: deleteTaskAction({ refetch: refetchTasks }),
     createTaskAction: createTaskAction({ refetch: refetchTasks, userId: id }),
   };

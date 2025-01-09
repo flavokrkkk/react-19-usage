@@ -12,10 +12,12 @@ const TaskPage = () => {
   const {
     search,
     tasksPromise,
+    createdAtSorted,
     onChangePage,
     onChangeSearch,
     deleteTaskAction,
     createTaskAction,
+    handleChangeSort,
   } = useTask(id ?? "");
 
   return (
@@ -35,10 +37,13 @@ const TaskPage = () => {
           className="border p-2 rounded"
           onChange={onChangeSearch}
         />
-        <select className="border p-2 rounded">
-          <option value="all">All</option>
-          <option value="completed">New to Old</option>
-          <option value="incompleted">Old to New</option>
+        <select
+          className="border p-2 rounded"
+          value={createdAtSorted}
+          onChange={handleChangeSort}
+        >
+          <option value="asc">Asc</option>
+          <option value="desc">Desc</option>
         </select>
       </div>
       <ErrorBoundary
