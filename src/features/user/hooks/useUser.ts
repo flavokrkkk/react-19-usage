@@ -1,6 +1,7 @@
 import { startTransition, useState } from "react";
 import { fetchUsers } from "../../../entities/user/libs/userService";
 import { IUser } from "../../../entities/user/types/types";
+import { createUserAction, deleteUserAction } from "../libs/actions/actions";
 
 const defaultUsers = fetchUsers();
 
@@ -14,6 +15,7 @@ export const useUser = () => {
 
   return {
     usersPromise,
-    refetchUsers,
-  };
+    createUserAction: createUserAction({ refetchUsers }),
+    deleteUserAction: deleteUserAction({ refetchUsers }),
+  } as const;
 };

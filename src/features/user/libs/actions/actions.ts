@@ -1,18 +1,29 @@
-import { createUser } from "../../../../entities/user/libs/userService";
+import {
+  createUser,
+  deleteUser,
+} from "../../../../entities/user/libs/userService";
 
-type CreateActionState = {
+export type CreateActionState = {
   defaulEmail?: string;
   error?: string;
 };
 
-export const creaetUserAction =
-  ({ refetchUsers }: { refetchUsers: () => void }) =>
-  async (
-    prevState: CreateActionState,
-    formData: FormData
-  ): Promise<CreateActionState> => {
+export type DeleteActionState = {
+  error?: string | null;
+  message?: string;
+};
+
+export type CreateUserAction<T> = (state: T, formData: FormData) => Promise<T>;
+
+export const createUserAction =
+  ({
+    refetchUsers,
+  }: {
+    refetchUsers: () => void;
+  }): CreateUserAction<CreateActionState> =>
+  async (_, formData): Promise<CreateActionState> => {
     try {
-      const email = formData.get("email")?.toString() ?? "";
+      const email = String(formData.get("email"));
 
       if (!email.length) {
         return {
@@ -32,6 +43,31 @@ export const creaetUserAction =
     } catch (err) {
       return {
         error: (err as Error).message,
+      };
+    }
+  };
+
+export type DeleteUserAction<T> = (state: T, formData: FormData) => Promise<T>;
+
+export const deleteUserAction =
+  ({
+    refetchUsers,
+  }: {
+    refetchUsers: () => void;
+  }): DeleteUserAction<DeleteActionState> =>
+  async (_, formData): Promise<DeleteActionState> => {
+    const userId = String(formData.get("userId"));
+    try {
+      await deleteUser(userId);
+      refetchUsers();
+      return {
+        error: null,
+        message: "User deleted successfully!",
+      };
+    } catch (err) {
+      return {
+        error: (err as Error).message,
+        message: "Missing Error!",
       };
     }
   };

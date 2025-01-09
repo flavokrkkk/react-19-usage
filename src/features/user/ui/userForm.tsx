@@ -1,15 +1,14 @@
 import { FC, useActionState } from "react";
-import { creaetUserAction } from "../libs/actions/actions";
+import { CreateActionState, CreateUserAction } from "../libs/actions/actions";
 
 interface IUserForm {
-  refetchUsers: () => void;
+  action: CreateUserAction<CreateActionState>;
 }
 
-const UserForm: FC<IUserForm> = ({ refetchUsers }) => {
-  const [state, dispatch, isPending] = useActionState(
-    creaetUserAction({ refetchUsers }),
-    { defaulEmail: "" }
-  );
+const UserForm: FC<IUserForm> = ({ action }) => {
+  const [state, dispatch, isPending] = useActionState(action, {
+    defaulEmail: "",
+  });
 
   return (
     <section>
@@ -20,7 +19,7 @@ const UserForm: FC<IUserForm> = ({ refetchUsers }) => {
           placeholder="Введите email.."
           className="outline-none p-3 px-5 border border-rose-600 rounded-lg"
         />
-        {state.error && state.error}
+        {state.error && <span className="text-red-500">{state.error}</span>}
         <button
           type="submit"
           disabled={isPending}

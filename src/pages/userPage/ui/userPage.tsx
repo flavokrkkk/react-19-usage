@@ -5,12 +5,12 @@ import { ErrorBoundary } from "react-error-boundary";
 import { useUser } from "../../../features/user/hooks/useUser";
 
 const UserPage = () => {
-  const { refetchUsers, usersPromise } = useUser();
+  const { usersPromise, createUserAction, deleteUserAction } = useUser();
 
   return (
     <div className="space-y-6">
       <h1 className="text-center">Users</h1>
-      <UserForm refetchUsers={refetchUsers} />
+      <UserForm action={createUserAction} />
       <ErrorBoundary
         fallbackRender={(e) => <div>There was an error! {e.error}</div>}
       >
@@ -19,7 +19,7 @@ const UserPage = () => {
             <div className="border rounded-full border-dashed w-5 h-5 border-white animate-spin" />
           }
         >
-          <UserList usersPromise={usersPromise} refetchUsers={refetchUsers} />
+          <UserList usersPromise={usersPromise} action={deleteUserAction} />
         </Suspense>
       </ErrorBoundary>
     </div>
