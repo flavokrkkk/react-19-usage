@@ -1,17 +1,10 @@
-import { startTransition, use, useOptimistic, useState } from "react";
-import { fetchUsers } from "../../../entities/user/libs/userService";
+import { use, useOptimistic } from "react";
 import { IUser } from "../../../entities/user/types/types";
 import { createUserAction, deleteUserAction } from "../libs/actions/actions";
-
-const defaultUsers = fetchUsers();
+import { useUsersCtx } from "../../../entities/user/libs/userCtx";
 
 export const useUser = () => {
-  const [usersPromise, setUsersPromise] =
-    useState<Promise<Array<IUser>>>(defaultUsers);
-
-  const refetchUsers = () => {
-    startTransition(() => setUsersPromise(fetchUsers()));
-  };
+  const { users: usersPromise, refetchUsers } = useUsersCtx();
 
   const [createdUsers, optimisticCreate] = useOptimistic(
     [] as Array<IUser>,
