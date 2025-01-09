@@ -2,18 +2,13 @@ import { FC, use, useTransition } from "react";
 import { IApiResponse, ITask } from "../../../entities/task/types/types";
 
 interface IPagination {
-  page: number;
   tasksPaginated: Promise<IApiResponse<ITask>>;
   onPageChange: (page: number) => void;
 }
 
-const TaskPaginate: FC<IPagination> = ({
-  page,
-  tasksPaginated,
-  onPageChange,
-}) => {
+const TaskPaginate: FC<IPagination> = ({ tasksPaginated, onPageChange }) => {
   const [isPending, startTransition] = useTransition();
-  const { last, first, next, prev, pages } = use(tasksPaginated);
+  const { last, first, next, prev, pages, page } = use(tasksPaginated);
 
   const handleChangePage = (event: React.MouseEvent<HTMLButtonElement>) => {
     const page = Number(event.currentTarget.value);

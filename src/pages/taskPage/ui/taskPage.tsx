@@ -9,13 +9,13 @@ import TaskPaginate from "../../../features/task/ui/taskPaginate";
 
 const TaskPage = () => {
   const { id } = useParams();
-
   const {
-    createTaskAction,
-    deleteTaskAction,
-    onChangePage,
-    page,
+    search,
     tasksPromise,
+    onChangePage,
+    onChangeSearch,
+    deleteTaskAction,
+    createTaskAction,
   } = useTask(id ?? "");
 
   return (
@@ -27,6 +27,20 @@ const TaskPage = () => {
         </Suspense>
       </div>
       <TaskForm action={createTaskAction} />
+      <div className="flex gap-2">
+        <input
+          placeholder="Search..."
+          type="text"
+          value={search}
+          className="border p-2 rounded"
+          onChange={onChangeSearch}
+        />
+        <select className="border p-2 rounded">
+          <option value="all">All</option>
+          <option value="completed">New to Old</option>
+          <option value="incompleted">Old to New</option>
+        </select>
+      </div>
       <ErrorBoundary
         fallbackRender={(e) => <div>There was an error! {e.error}</div>}
       >
@@ -37,7 +51,6 @@ const TaskPage = () => {
         >
           <TaskList tasksPromise={tasksPromise} action={deleteTaskAction} />
           <TaskPaginate
-            page={page}
             onPageChange={onChangePage}
             tasksPaginated={tasksPromise}
           />

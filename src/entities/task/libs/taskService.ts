@@ -16,6 +16,7 @@ export class TaskService {
     };
     filters: {
       userId: string | undefined;
+      title?: string;
     };
   }): Promise<IApiResponse<ITask>> {
     const params = String(
@@ -24,12 +25,13 @@ export class TaskService {
         _per_page: String(per_page),
         _sort: sort.createdAt === "ask" ? "createdAt" : "-createdAt",
         userId: filters.userId ?? "",
+        title: filters.title ?? "",
       })
     );
 
-    return await jsonApiInstance(`tasks?${params}`, {
+    return await jsonApiInstance<IApiResponse<ITask>>(`tasks?${params}`, {
       method: "GET",
-    });
+    }).then((data) => ({ ...data, page }));
   }
 
   public async createTask(requestBody: ITask) {

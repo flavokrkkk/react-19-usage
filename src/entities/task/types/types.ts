@@ -8,6 +8,7 @@ export interface ITask {
 
 export interface IApiResponse<T> {
   first: number;
+  page: number;
   prev: null | number;
   next: null | number;
   last: number;
