@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useActionState, useState } from "react";
+import { FC, useActionState } from "react";
 import { creaetUserAction } from "../libs/actions/actions";
 
 interface IUserForm {
@@ -6,27 +6,19 @@ interface IUserForm {
 }
 
 const UserForm: FC<IUserForm> = ({ refetchUsers }) => {
-  const [email, setEmail] = useState("");
-
   const [state, dispatch, isPending] = useActionState(
-    creaetUserAction({ refetchUsers, setEmail }),
+    creaetUserAction({ refetchUsers }),
     { defaulEmail: "" }
   );
-
-  const handleChangeEmail = (event: ChangeEvent<HTMLInputElement>) => {
-    setEmail(event.target.value);
-  };
 
   return (
     <section>
       <form action={dispatch} className="flex flex-col space-y-2">
         <input
           name="email"
-          value={email}
           disabled={isPending}
           placeholder="Введите email.."
           className="outline-none p-3 px-5 border border-rose-600 rounded-lg"
-          onChange={handleChangeEmail}
         />
         {state.error && state.error}
         <button

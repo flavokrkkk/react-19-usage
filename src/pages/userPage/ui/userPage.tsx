@@ -1,18 +1,11 @@
-import { Suspense, useState } from "react";
-import { IUser } from "../../../entities/user/types/types";
+import { Suspense } from "react";
 import UserList from "../../../features/user/ui/userList";
 import UserForm from "../../../features/user/ui/userForm";
-import { fetchUsers } from "../../../entities/user/libs/userService";
 import { ErrorBoundary } from "react-error-boundary";
-
-const defaultUsers = fetchUsers();
+import { useUser } from "../../../features/user/hooks/useUser";
 
 const UserPage = () => {
-  const [users, setUsers] = useState<Promise<Array<IUser>>>(defaultUsers);
-
-  const refetchUsers = () => {
-    setUsers(fetchUsers());
-  };
+  const { refetchUsers, usersPromise } = useUser();
 
   return (
     <div className="space-y-6">
@@ -26,7 +19,7 @@ const UserPage = () => {
             <div className="border rounded-full border-dashed w-5 h-5 border-white animate-spin" />
           }
         >
-          <UserList usersPromise={users} refetchUsers={refetchUsers} />
+          <UserList usersPromise={usersPromise} refetchUsers={refetchUsers} />
         </Suspense>
       </ErrorBoundary>
     </div>
