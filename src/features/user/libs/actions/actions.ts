@@ -2,6 +2,7 @@ import {
   createUser,
   deleteUser,
 } from "../../../../entities/user/libs/userService";
+import { IUser } from "../../../../entities/user/types/types";
 
 export type CreateActionState = {
   defaulEmail?: string;
@@ -18,8 +19,10 @@ export type CreateUserAction<T> = (state: T, formData: FormData) => Promise<T>;
 export const createUserAction =
   ({
     refetchUsers,
+    optimisticUpdate,
   }: {
     refetchUsers: () => void;
+    optimisticUpdate: (user: IUser) => void;
   }): CreateUserAction<CreateActionState> =>
   async (_, formData): Promise<CreateActionState> => {
     try {
@@ -30,13 +33,15 @@ export const createUserAction =
           error: "Invalid email!",
         };
       }
-
-      await createUser({
+      const newUser = {
         id: crypto.randomUUID(),
         email: email,
-      });
-      refetchUsers();
+      };
+
+      optimisticUpdate(newUser);
+      await createUser(newUser);
       formData.delete("email");
+      refetchUsers();
       return {
         defaulEmail: email,
       };
@@ -52,12 +57,15 @@ export type DeleteUserAction<T> = (state: T, formData: FormData) => Promise<T>;
 export const deleteUserAction =
   ({
     refetchUsers,
+    optimisticUpdate,
   }: {
     refetchUsers: () => void;
+    optimisticUpdate: (id: IUser["id"]) => void;
   }): DeleteUserAction<DeleteActionState> =>
   async (_, formData): Promise<DeleteActionState> => {
     const userId = String(formData.get("userId"));
     try {
+      optimisticUpdate(userId);
       await deleteUser(userId);
       refetchUsers();
       return {

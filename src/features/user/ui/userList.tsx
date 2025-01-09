@@ -1,15 +1,15 @@
-import { FC, use } from "react";
+import { FC, useMemo } from "react";
 import { IUser } from "../../../entities/user/types/types";
 import UserCard from "./userCard";
 import { DeleteActionState, DeleteUserAction } from "../libs/actions/actions";
 
 interface IUserList {
-  usersPromise: Promise<Array<IUser>>;
+  usersPromise: () => IUser[];
   action: DeleteUserAction<DeleteActionState>;
 }
 
 const UserList: FC<IUserList> = ({ usersPromise, action }) => {
-  const users = use(usersPromise);
+  const users = useMemo(() => usersPromise(), [usersPromise]);
 
   return (
     <section className="flex flex-col space-y-2">

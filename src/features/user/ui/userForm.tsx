@@ -1,11 +1,11 @@
-import { FC, useActionState } from "react";
+import { FC, memo, useActionState } from "react";
 import { CreateActionState, CreateUserAction } from "../libs/actions/actions";
 
 interface IUserForm {
   action: CreateUserAction<CreateActionState>;
 }
 
-const UserForm: FC<IUserForm> = ({ action }) => {
+const UserForm: FC<IUserForm> = memo(({ action }) => {
   const [state, dispatch, isPending] = useActionState(action, {
     defaulEmail: "",
   });
@@ -34,5 +34,5 @@ const UserForm: FC<IUserForm> = ({ action }) => {
       </form>
     </section>
   );
-};
+});
 export default UserForm;

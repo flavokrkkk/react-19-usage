@@ -3,11 +3,11 @@ import { IUser } from "../types/types";
 
 class UserService {
   public async fetchUsers(): Promise<IUser[]> {
-    return await jsonApiInstance(`users`);
+    return await jsonApiInstance("users");
   }
 
   public async createUser(user: IUser) {
-    return await jsonApiInstance(`users`, {
+    return await jsonApiInstance("users", {
       body: JSON.stringify(user),
       method: "POST",
     });

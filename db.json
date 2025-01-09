@@ -2,12 +2,24 @@
   "tasks": [],
   "users": [
     {
-      "id": "17784259-decf-462d-b6c0-ba0f32e79957",
+      "id": "a8709eaa-1eee-4a06-b34c-5be1a0f049a2",
+      "email": "egor@gmail.com"
+    },
+    {
+      "id": "fa70d4b1-be0d-4438-b9a9-b3f48c3e5876",
+      "email": "egor@gmail.com"
+    },
+    {
+      "id": "8319a65e-cd30-4654-8059-d69d6ea22f4e",
       "email": "egoryarovitsyn1@gmail.com"
     },
     {
-      "id": "52128b51-bc1b-494c-8a7f-2c5456a36529",
-      "email": "test3@gmail.com"
+      "id": "2253793f-46ef-4b24-95e2-f7e76dd677d7",
+      "email": "egor@gmail.com"
+    },
+    {
+      "id": "509cbf44-7e7e-4468-ba67-130cb402ead9",
+      "email": "egor@gmail.com"
     }
   ]
 }
